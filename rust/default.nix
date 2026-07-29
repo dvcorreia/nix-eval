@@ -1,0 +1,36 @@
+{
+  lib,
+  lld,
+  rustPlatform,
+  tvix,
+  wasm-bindgen-cli_0_2_99,
+}:
+
+rustPlatform.buildRustPackage {
+  pname = "nix-eval-wasm";
+  version = "0.1.0";
+
+  src = lib.cleanSource ../.;
+
+  cargoRoot = "rust";
+  buildAndTestSubdir = "rust";
+  cargoLock.lockFile = ./Cargo.lock;
+
+  postUnpack = ''
+    cp -R ${tvix}/tvix "$sourceRoot/rust/tvix"
+  '';
+
+  nativeBuildInputs = [
+    lld
+    wasm-bindgen-cli_0_2_99
+  ];
+
+  cargoBuildFlags = [ "--target=wasm32-unknown-unknown" ];
+
+  doCheck = false;
+
+  installPhase = ''
+    wasm-bindgen --target web --out-dir "$out" --out-name nix_eval \
+      target/wasm32-unknown-unknown/release/nix_eval.wasm
+  '';
+}
