@@ -19,6 +19,11 @@
     "build": "pnpm run build:wasm && pnpm run build:types",
     "build:wasm": "cargo build --locked --release --manifest-path rust/Cargo.toml --target wasm32-unknown-unknown && wasm-bindgen --target web --out-dir wasm --out-name nix_eval rust/target/wasm32-unknown-unknown/release/nix_eval.wasm",
     "build:types": "tsc",
+    "test": "vitest run --config vitest.config.ts",
     "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "vitest": "^4.1.10"
   }
 }

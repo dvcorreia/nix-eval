@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-dIp6CNh1Kn4aqJWku1G/FUdn/u+epzhqlqwnAkB2uW0=";
+    hash = "sha256-lo6JFoHWWMw7OSAQbTeTF/7MqwuLz26Ik3d2MC0IpKI=";
     fetcherVersion = 4;
   };
 
@@ -35,6 +35,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     pnpm run build:types
 
     runHook postBuild
+  '';
+
+  doCheck = true;
+  checkPhase = ''
+    runHook preCheck
+    pnpm run test
+    runHook postCheck
   '';
 
   installPhase = ''
