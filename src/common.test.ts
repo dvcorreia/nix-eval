@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseOutput } from "./common.js";
+import { parseOutput } from "#src/common.js";
 
 const output = {
   errors: "",

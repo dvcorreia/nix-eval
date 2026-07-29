@@ -1,6 +1,6 @@
-import init, { eval as evalWasm } from "../wasm/nix_eval.js";
-import { parseOutput } from "./common.js";
-import type { Evaluator } from "./common.js";
+import init, { eval as evalWasm } from "#wasm/nix_eval.js";
+import { parseOutput } from "#src/common.js";
+import type { Evaluator } from "#src/common.js";
 
 let initialized: Promise<void> | undefined;
 

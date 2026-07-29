@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("../wasm/nix_eval.js", () => ({
+vi.mock("#wasm/nix_eval.js", () => ({
   default: vi.fn().mockResolvedValue(undefined),
   eval: vi.fn((source: string, _location: string) =>
     JSON.stringify({
@@ -14,7 +14,7 @@ vi.mock("../wasm/nix_eval.js", () => ({
   ),
 }));
 
-import { createEvaluator } from "./sync.js";
+import { createEvaluator } from "#src/sync.js";
 
 describe("createEvaluator", () => {
   it("returns an evaluator with an eval function", async () => {
@@ -24,7 +24,7 @@ describe("createEvaluator", () => {
   });
 
   it("initializes WASM only once", async () => {
-    const mod = await import("../wasm/nix_eval.js");
+    const mod = await import("#wasm/nix_eval.js");
     const init = mod.default as ReturnType<typeof vi.fn>;
 
     await createEvaluator();

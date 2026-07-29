@@ -1,2 +1,2 @@
-export type { Evaluator, Output } from "./common.js";
-export { createEvaluator } from "./sync.js";
+export type { Evaluator, Output } from "#src/common.js";
+export { createEvaluator } from "#src/sync.js";
