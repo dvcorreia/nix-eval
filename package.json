@@ -1,0 +1,24 @@
+{
+  "name": "nix-eval",
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "wasm"
+  ],
+  "scripts": {
+    "build": "pnpm run build:wasm && pnpm run build:types",
+    "build:wasm": "cargo build --locked --release --manifest-path rust/Cargo.toml --target wasm32-unknown-unknown && wasm-bindgen --target web --out-dir wasm --out-name nix_eval rust/target/wasm32-unknown-unknown/release/nix_eval.wasm",
+    "build:types": "tsc",
+    "typecheck": "tsc --noEmit"
+  }
+}

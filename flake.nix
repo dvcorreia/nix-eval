@@ -20,6 +20,8 @@
     {
       overlays.default = final: _: {
         nix-eval-wasm = final.callPackage ./rust { inherit tvix; };
+        nix-eval = final.callPackage ./package.nix { };
+        nix-eval-tarball = final.callPackage ./release.nix { };
       };
 
       packages = forAllSystems (
@@ -31,7 +33,8 @@
           };
         in
         {
-          inherit (pkgs) nix-eval-wasm;
+          inherit (pkgs) nix-eval nix-eval-tarball nix-eval-wasm;
+          default = pkgs.nix-eval;
         }
       );
 
@@ -47,8 +50,14 @@
         in
         {
           default = pkgs.mkShell {
-            inputsFrom = [ pkgs.nix-eval-wasm ];
-            packages = [ pkgs.rustfmt ];
+            inputsFrom = [
+              pkgs.nix-eval
+              pkgs.nix-eval-wasm
+            ];
+            packages = [
+              pkgs.pnpm
+              pkgs.rustfmt
+            ];
             shellHook = ''
               if [ -L rust/tvix ] && [ "$(readlink rust/tvix)" != "${tvix}/tvix" ]; then
                 rm rust/tvix
