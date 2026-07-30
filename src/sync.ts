@@ -1,4 +1,4 @@
-import init, { eval as evalWasm } from "#wasm/nix_eval.js";
+import init, { evaluate } from "#wasm/nix_eval.js";
 import { parseOutput } from "#src/common.js";
 import type { Evaluator } from "#src/common.js";
 
@@ -10,7 +10,7 @@ export async function createEvaluator(): Promise<Evaluator> {
 
   return {
     async eval(source, location = "/input.nix") {
-      return parseOutput(evalWasm(source, location));
+      return parseOutput(evaluate(source, location));
     },
   };
 }

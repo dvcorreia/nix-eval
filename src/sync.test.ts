@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("#wasm/nix_eval.js", () => ({
   default: vi.fn().mockResolvedValue(undefined),
-  eval: vi.fn((source: string, _location: string) =>
+  evaluate: vi.fn((source: string, _location: string) =>
     JSON.stringify({
       errors: "",
       warnings: "",

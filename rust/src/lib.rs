@@ -54,7 +54,7 @@ fn eval(source: &str, location: &str) -> Output {
     output
 }
 
-#[wasm_bindgen(js_name = eval)]
+#[wasm_bindgen(js_name = evaluate)]
 pub fn eval_wasm(source: &str, location: &str) -> String {
     let output = eval(source, location);
     serde_json::json!({
