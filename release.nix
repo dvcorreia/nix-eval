@@ -2,11 +2,12 @@
   nix-eval,
   pnpm,
   stdenvNoCC,
+  version ? "0.0.0",
 }:
 
 stdenvNoCC.mkDerivation {
   pname = "nix-eval-tarball";
-  version = "0.1.0";
+  inherit version;
 
   dontUnpack = true;
   nativeBuildInputs = [ pnpm ];

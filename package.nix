@@ -7,11 +7,13 @@
   pnpmConfigHook,
   stdenvNoCC,
   typescript,
+  version ? "0.0.0",
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "nix-eval";
-  version = "0.1.0";
+  inherit version;
+
   src = lib.cleanSource ./.;
 
   pnpmDeps = fetchPnpmDeps {

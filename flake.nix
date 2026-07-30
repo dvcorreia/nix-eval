@@ -16,12 +16,14 @@
     let
       inherit (nixpkgs) lib;
       forAllSystems = lib.genAttrs lib.systems.flakeExposed;
+
+      version = (builtins.fromJSON (builtins.readFile ./package.json)).version;
     in
     {
       overlays.default = final: _: {
-        nix-eval-wasm = final.callPackage ./rust { inherit tvix; };
-        nix-eval = final.callPackage ./package.nix { };
-        nix-eval-tarball = final.callPackage ./release.nix { };
+        nix-eval-wasm = final.callPackage ./rust { inherit tvix version; };
+        nix-eval = final.callPackage ./package.nix { inherit version; };
+        nix-eval-tarball = final.callPackage ./release.nix { inherit version; };
       };
 
       packages = forAllSystems (

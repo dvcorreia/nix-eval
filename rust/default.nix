@@ -4,11 +4,12 @@
   rustPlatform,
   tvix,
   wasm-bindgen-cli_0_2_99,
+  version ? "0.0.0",
 }:
 
 rustPlatform.buildRustPackage {
   pname = "nix-eval-wasm";
-  version = "0.1.0";
+  inherit version;
 
   src = lib.cleanSource ./.;
 
