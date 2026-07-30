@@ -10,14 +10,12 @@ rustPlatform.buildRustPackage {
   pname = "nix-eval-wasm";
   version = "0.1.0";
 
-  src = lib.cleanSource ../.;
+  src = lib.cleanSource ./.;
 
-  cargoRoot = "rust";
-  buildAndTestSubdir = "rust";
   cargoLock.lockFile = ./Cargo.lock;
 
   postUnpack = ''
-    cp -R ${tvix}/tvix "$sourceRoot/rust/tvix"
+    cp -R ${tvix}/tvix "$sourceRoot/tvix"
   '';
 
   nativeBuildInputs = [
