@@ -2,5 +2,6 @@ rust/target/
 rust/tvix
 result
 dist/
+dist-demo/
 node_modules/
 wasm/

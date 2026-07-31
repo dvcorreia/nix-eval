@@ -1,0 +1,257 @@
+/* -- reset -- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
+  font-size: 0.9rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+}
+
+/* -- layout -- */
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+header h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+
+.logo {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+header nav {
+  margin-left: auto;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+section[aria-label="editor"],
+aside[aria-label="results"] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+aside[aria-label="results"] {
+  border-left: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  body {
+    height: auto;
+  }
+
+  main {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  section[aria-label="editor"],
+  aside[aria-label="results"] {
+    min-height: 0;
+  }
+
+  aside[aria-label="results"] {
+    border-left: none;
+    border-top: 1px solid #ddd;
+  }
+
+  code-editor {
+    min-height: 30vh;
+  }
+}
+
+/* -- code-editor -- */
+code-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+code-editor .code-panel {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+code-editor .line-numbers {
+  width: 3rem;
+  flex-shrink: 0;
+  padding: 0 0.5rem;
+  text-align: right;
+  color: #999;
+  user-select: none;
+  overflow: hidden;
+}
+
+code-editor textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+  resize: none;
+  tab-size: 2;
+  outline: none;
+  padding: 1rem 1rem 1rem 0;
+  overflow: auto;
+}
+
+/* -- eval-output -- */
+nix-eval-output {
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+nix-eval-output .content {
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-y: auto;
+  flex: 1;
+}
+
+nix-eval-output .content:empty {
+  display: none;
+}
+
+nix-eval-output > .placeholder {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  color: #999;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+nix-eval-output[data-type="error"] .content {
+  color: #c00;
+}
+
+/* -- accordion -- */
+layout-accordion {
+  min-height: 0;
+  border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+layout-accordion:not([expanded]) {
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
+layout-accordion .acc-header {
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+  flex-shrink: 0;
+  text-align: left;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+layout-accordion .acc-header::before {
+  margin-right: 0.5rem;
+}
+
+layout-accordion[expanded] .acc-header::before {
+  content: '\25be';
+}
+
+layout-accordion:not([expanded]) .acc-header::before {
+  content: '\25b8';
+}
+
+layout-accordion .acc-body {
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+
+layout-accordion:not([expanded]) .acc-body {
+  display: none;
+}
+
+/* -- eval-field -- */
+nix-eval-field {
+  display: block;
+  min-height: 0;
+}
+
+nix-eval-field pre {
+  margin: 0;
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* -- mobile: accordions size to content in auto-height flow -- */
+@media (max-width: 768px) {
+  layout-accordion {
+    flex-basis: auto;
+    flex-grow: 0;
+    overflow: visible;
+  }
+
+  layout-accordion[expanded] .acc-body {
+    overflow: visible;
+  }
+}
