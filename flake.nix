@@ -41,6 +41,10 @@
         }
       );
 
+      checks = forAllSystems (system: {
+        nix-eval = self.packages.${system}.nix-eval;
+      });
+
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       devShells = forAllSystems (
