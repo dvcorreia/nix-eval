@@ -1,6 +1,6 @@
 {
   "name": "nix-eval",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1",
   "description": "Evaluate Nix code in the browser with Tvix and WebAssembly",
   "keywords": [
     "nix",
