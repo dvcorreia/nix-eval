@@ -10,8 +10,8 @@ permissions:
 
 jobs:
   publish-npm:
-    name: Publish npm package
     runs-on: ubuntu-latest
+    environment: publish-npm
     permissions:
       contents: read
       id-token: write
