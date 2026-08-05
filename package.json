@@ -3,31 +3,42 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@11.17.0",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "imports": {
     "#src/*": "./src/*",
-    "#wasm/*": "./wasm/*"
+    "#wasm/nix_eval.js": {
+      "types": "./wasm/web/nix_eval.d.ts",
+      "node": "./wasm/node/nix_eval.cjs",
+      "import": "./wasm/web/nix_eval.js",
+      "require": "./wasm/node/nix_eval.cjs"
+    }
   },
   "files": [
     "dist",
     "wasm"
   ],
   "scripts": {
-    "build": "pnpm run build:wasm && pnpm run build:types",
-    "build:wasm": "cargo build --locked --release --manifest-path rust/Cargo.toml --target wasm32-unknown-unknown && wasm-bindgen --target web --out-dir wasm --out-name nix_eval rust/target/wasm32-unknown-unknown/release/nix_eval.wasm",
-    "build:types": "tsc",
+    "build": "pnpm run build:wasm && pnpm run build:js && pnpm run build:types",
+    "build:js": "rolldown --config",
+    "build:wasm": "pnpm run build:wasm:web && pnpm run build:wasm:nodejs",
+    "build:wasm:nodejs": "wasm-bindgen --target nodejs --out-dir wasm/node --out-name nix_eval rust/target/wasm32-unknown-unknown/release/nix_eval.wasm && mv wasm/node/nix_eval.js wasm/node/nix_eval.cjs",
+    "build:wasm:web": "cargo build --locked --release --manifest-path rust/Cargo.toml --target wasm32-unknown-unknown && wasm-bindgen --target web --out-dir wasm/web --out-name nix_eval rust/target/wasm32-unknown-unknown/release/nix_eval.wasm",
+    "build:types": "tsc --emitDeclarationOnly",
     "test": "vitest run --config vitest.config.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
+    "rolldown": "^1.1.5",
     "vitest": "^4.1.10"
   }
 }

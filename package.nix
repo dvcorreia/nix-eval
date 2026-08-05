@@ -34,6 +34,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     mkdir wasm
     cp -R ${nix-eval-wasm}/. wasm/
+    pnpm run build:js
     pnpm run build:types
 
     runHook postBuild

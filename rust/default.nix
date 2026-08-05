@@ -29,7 +29,10 @@ rustPlatform.buildRustPackage {
   doCheck = false;
 
   installPhase = ''
-    wasm-bindgen --target web --out-dir "$out" --out-name nix_eval \
+    wasm-bindgen --target web --out-dir "$out/web" --out-name nix_eval \
       target/wasm32-unknown-unknown/release/nix_eval.wasm
+    wasm-bindgen --target nodejs --out-dir "$out/node" --out-name nix_eval \
+      target/wasm32-unknown-unknown/release/nix_eval.wasm
+    mv "$out/node/nix_eval.js" "$out/node/nix_eval.cjs"
   '';
 }
