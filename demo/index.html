@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nix-eval demo</title>
+    <link rel="icon" type="image/svg+xml" href="/nix.svg" />
+  </head>
+  <body>
+    <header>
+      <h1><img class="logo" src="/nix.svg" alt="Nix logo" />nix-eval</h1>
+      <nav>
+        <a href="https://github.com/dvcorreia/nix-eval">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section aria-label="editor">
+        <code-editor></code-editor>
+        <nix-eval-output></nix-eval-output>
+      </section>
+
+      <aside aria-label="results">
+        <layout-accordion label="AST">
+          <nix-eval-field field="ast"></nix-eval-field>
+        </layout-accordion>
+        <layout-accordion label="Bytecode">
+          <nix-eval-field field="bytecode"></nix-eval-field>
+        </layout-accordion>
+        <layout-accordion label="Trace">
+          <nix-eval-field field="trace"></nix-eval-field>
+        </layout-accordion>
+      </aside>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

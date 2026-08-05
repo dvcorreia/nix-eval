@@ -23,6 +23,7 @@
       overlays.default = final: _: {
         nix-eval-wasm = final.callPackage ./rust { inherit tvix version; };
         nix-eval = final.callPackage ./package.nix { inherit version; };
+        nix-eval-demo = final.callPackage ./demo { inherit version; };
         nix-eval-tarball = final.callPackage ./release.nix { inherit version; };
       };
 
@@ -35,7 +36,7 @@
           };
         in
         {
-          inherit (pkgs) nix-eval nix-eval-tarball nix-eval-wasm;
+          inherit (pkgs) nix-eval nix-eval-demo nix-eval-tarball nix-eval-wasm;
           default = pkgs.nix-eval;
         }
       );
@@ -55,6 +56,7 @@
             inputsFrom = [
               pkgs.nix-eval
               pkgs.nix-eval-wasm
+              pkgs.nix-eval-demo
             ];
             packages = [
               pkgs.pnpm

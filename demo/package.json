@@ -1,0 +1,19 @@
+{
+  "name": "nix-eval-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test:node:cjs": "node test/node-cjs.cjs",
+    "test:node:esm": "node test/node-esm.mjs"
+  },
+  "dependencies": {
+    "nix-eval": "file:.."
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0"
+  }
+}
