@@ -1,4 +1,4 @@
-name: Release
+name: Publish npm package
 
 on:
   push:
@@ -17,41 +17,18 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-
       - uses: cachix/install-nix-action@v31
 
       - name: Build package tarball
         run: nix build .#nix-eval-tarball
 
       - name: Publish package
-        run: nix shell nixpkgs#nodejs --command npm publish ./result/nix-eval-*.tgz --access public
-
-  deploy-pages:
-    name: Deploy demo to GitHub Pages
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: cachix/install-nix-action@v31
-
-      - name: Build demo
-        run: nix build .#nix-eval-demo
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./result
-
-      - name: Deploy Pages artifact
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          nix shell nixpkgs#nodejs --command sh -ceu '
+            version=$(node -p "require(\"./package.json\").version")
+            case "$version" in
+              *-*) tag=${version#*-}; tag=${tag%%.*} ;;
+              *) tag=latest ;;
+            esac
+            npm publish ./result/nix-eval-*.tgz --access public --tag "$tag"
+          '
