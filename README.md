@@ -16,11 +16,14 @@ initializes its WebAssembly module on first use.
 ```ts
 import { createEvaluator } from "nix-eval";
 
-const evaluator = await createEvaluator();
+const evaluator = await createEvaluator({ strict: true });
 const result = await evaluator.eval("6 * 7");
 
 console.log(result.output); // "42"
 ```
+
+Pass `{ strict: true }` to force the final value before rendering. This resolves
+lazy values in attribute sets and lists instead of displaying `<CODE>`.
 
 Pass a location as the second argument to associate diagnostics with a source
 name. It defaults to `"<string>"`.

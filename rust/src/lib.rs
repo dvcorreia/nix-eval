@@ -13,7 +13,7 @@ struct Output {
     ast: String,
 }
 
-fn eval(source: &str, location: &str) -> Output {
+fn eval(source: &str, location: &str, strict: bool) -> Output {
     let mut output = Output::default();
     let mut builder = tvix_eval::Evaluation::builder_pure();
     let source_map = builder.source_map().clone();
@@ -26,7 +26,14 @@ fn eval(source: &str, location: &str) -> Output {
         let mut runtime_observer = TracingObserver::new(&mut output.trace);
         builder.set_runtime_observer(Some(&mut runtime_observer));
 
-        builder.build().evaluate(source, Some(location.into()))
+        builder
+            .mode(if strict {
+                tvix_eval::EvalMode::Strict
+            } else {
+                tvix_eval::EvalMode::Lazy
+            })
+            .build()
+            .evaluate(source, Some(location.into()))
     };
 
     if let Some(expr) = &result.expr {
@@ -55,8 +62,8 @@ fn eval(source: &str, location: &str) -> Output {
 }
 
 #[wasm_bindgen(js_name = evaluate)]
-pub fn eval_wasm(source: &str, location: &str) -> String {
-    let output = eval(source, location);
+pub fn eval_wasm(source: &str, location: &str, strict: bool) -> String {
+    let output = eval(source, location, strict);
     serde_json::json!({
         "errors": output.errors,
         "warnings": output.warnings,
@@ -74,7 +81,7 @@ mod tests {
 
     #[test]
     fn evaluates_a_pure_expression() {
-        let result = eval("6 * 7", "/input.nix");
+        let result = eval("6 * 7", "/input.nix", false);
 
         assert_eq!(result.output, "42");
         assert!(result.warnings.is_empty());
@@ -86,7 +93,7 @@ mod tests {
 
     #[test]
     fn returns_parse_errors_as_data() {
-        let result = eval("let", "/input.nix");
+        let result = eval("let", "/input.nix", false);
 
         assert!(result.output.is_empty());
         assert!(result.warnings.is_empty());
@@ -97,8 +104,20 @@ mod tests {
     #[test]
     fn serializes_output_for_wasm() {
         let output: serde_json::Value =
-            serde_json::from_str(&eval_wasm("6 * 7", "/input.nix")).unwrap();
+            serde_json::from_str(&eval_wasm("6 * 7", "/input.nix", false)).unwrap();
 
         assert_eq!(output["output"], "42");
+    }
+
+    #[test]
+    fn strict_evaluation_forces_nested_values() {
+        let source = "{ value = builtins.concatStringsSep \"\" [ \"hello\" \" world\" ]; }";
+
+        assert!(eval(source, "/input.nix", false).output.contains("<CODE>"));
+        let strict_output = eval(source, "/input.nix", true).output;
+        assert!(
+            strict_output.contains("hello world"),
+            "unexpected strict output: {strict_output}"
+        );
     }
 }

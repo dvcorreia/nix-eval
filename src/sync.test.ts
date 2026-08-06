@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("#wasm/nix_eval.js", () => ({
   default: vi.fn().mockResolvedValue(undefined),
-  evaluate: vi.fn((source: string, _location: string) =>
+  evaluate: vi.fn((source: string, _location: string, _strict: boolean) =>
     JSON.stringify({
       errors: "",
       warnings: "",
@@ -39,5 +39,15 @@ describe("createEvaluator", () => {
 
     expect(result.output).toBe("42");
     expect(result.errors).toBe("");
+  });
+
+  it("passes the strict option to the WASM binding", async () => {
+    const mod = await import("#wasm/nix_eval.js");
+    const evaluate = mod.evaluate as ReturnType<typeof vi.fn>;
+    const evaluator = await createEvaluator({ strict: true });
+
+    await evaluator.eval("6 * 7");
+
+    expect(evaluate).toHaveBeenLastCalledWith("6 * 7", "/input.nix", true);
   });
 });
