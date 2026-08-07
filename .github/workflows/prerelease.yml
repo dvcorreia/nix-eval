@@ -1,0 +1,26 @@
+name: Publish npm prerelease
+
+on:
+  push:
+    tags:
+      - "**-*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    environment: publish-npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+
+      - name: Build package tarball
+        run: nix build .#nix-eval-tarball
+
+      - name: Publish package
+        run: nix shell nixpkgs#nodejs --command npm publish ./result/nix-eval-*.tgz --access public --tag next
