@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - "v*"
-      - "!v*-*"
 
 permissions:
   contents: write
@@ -24,9 +23,16 @@ jobs:
         run: nix build .#nix-eval-tarball
 
       - name: Publish package
-        run: nix shell nixpkgs#nodejs --command npm publish ./result/nix-eval-*.tgz --access public
+        run: |
+          if [[ "${{ github.ref_name }}" == *-* ]]; then
+            npm_tag=next
+          else
+            npm_tag=latest
+          fi
+          nix shell nixpkgs#nodejs --command npm publish ./result/nix-eval-*.tgz --access public --tag "$npm_tag"
 
       - name: Create GitHub release
+        if: ${{ !contains(github.ref_name, '-') }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "${{ github.ref_name }}" --generate-notes
