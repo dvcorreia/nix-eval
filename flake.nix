@@ -63,7 +63,6 @@
               pkgs.nix-eval-demo
             ];
             packages = [
-              pkgs.pnpm
               pkgs.rustfmt
             ];
             shellHook = ''

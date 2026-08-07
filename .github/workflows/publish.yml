@@ -1,9 +1,10 @@
-name: Publish npm package
+name: Publish npm release
 
 on:
   push:
     tags:
       - "**"
+      - "!**-*"
 
 permissions:
   contents: write
@@ -23,15 +24,7 @@ jobs:
         run: nix build .#nix-eval-tarball
 
       - name: Publish package
-        run: |
-          nix shell nixpkgs#nodejs --command sh -ceu '
-            version=$(node -p "require(\"./package.json\").version")
-            case "$version" in
-              *-*) tag=${version#*-}; tag=${tag%%.*} ;;
-              *) tag=latest ;;
-            esac
-            npm publish ./result/nix-eval-*.tgz --access public --tag "$tag"
-          '
+        run: nix shell nixpkgs#nodejs --command npm publish ./result/nix-eval-*.tgz --access public
 
       - name: Create GitHub release
         env:
