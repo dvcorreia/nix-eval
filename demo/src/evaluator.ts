@@ -19,7 +19,7 @@ export interface EvalErrorEvent {
 export type NixEval = (source: string) => Promise<void>;
 
 export async function createNixEvaluator(el: EventTarget): Promise<NixEval> {
-  const ev = await createEvaluator();
+  const ev = await createEvaluator({ strict: true });
 
   return async (source: string): Promise<void> => {
     const start = performance.now();

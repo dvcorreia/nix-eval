@@ -7,6 +7,10 @@ export type Output = {
   ast: string;
 };
 
+export type EvaluatorOptions = {
+  strict?: boolean;
+};
+
 export interface Evaluator {
   eval(source: string, location?: string): Promise<Output>;
 }
