@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     tvix = {
-      url = "git+https://cl.tvl.fyi/depot?ref=canon&rev=60cffdcbe403b0101e579f6d1031348c54b63f7d";
+      url = "git+https://cl.tvl.fyi/depot?ref=canon&rev=9026ae7bd20cf8d7e58b18746dc5e311233bf82b";
       flake = false;
     };
   };

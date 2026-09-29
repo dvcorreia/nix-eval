@@ -24,11 +24,13 @@ describe("createEvaluator", () => {
   });
 
   it("initializes WASM only once", async () => {
+    vi.resetModules();
+    const { createEvaluator: createFreshEvaluator } = await import("#src/sync.js");
     const mod = await import("#wasm/nix_eval.js");
     const init = mod.default as ReturnType<typeof vi.fn>;
 
-    await createEvaluator();
-    await createEvaluator();
+    await createFreshEvaluator();
+    await createFreshEvaluator();
 
     expect(init).toHaveBeenCalledTimes(1);
   });
