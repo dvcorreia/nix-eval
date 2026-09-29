@@ -2,7 +2,7 @@
   fetchPnpmDeps,
   lib,
   nix-eval,
-  nodejs_22,
+  nodejs_26,
   pnpm,
   pnpmConfigHook,
   stdenvNoCC,
@@ -21,11 +21,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     sourceRoot = "${finalAttrs.src.name}/demo";
     inherit pnpm;
     fetcherVersion = 4;
-    hash = "sha256-PKUw+UQBM258Bs6EfsU+noARp4lFtB8lDpd9k1ZSmz4=";
+    hash = "sha256-WNvgO9ck9o5OHhREctNBkTNDiT335f8T7Dvn5zCcrPQ=";
   };
 
   nativeBuildInputs = [
-    nodejs_22
+    nodejs_26
     pnpm
     pnpmConfigHook
   ];

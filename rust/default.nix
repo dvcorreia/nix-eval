@@ -3,7 +3,7 @@
   lld,
   rustPlatform,
   tvix,
-  wasm-bindgen-cli_0_2_99,
+  wasm-bindgen-cli_0_2_125,
   version ? "0.0.0",
 }:
 
@@ -21,7 +21,7 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [
     lld
-    wasm-bindgen-cli_0_2_99
+    wasm-bindgen-cli_0_2_125
   ];
 
   cargoBuildFlags = [ "--target=wasm32-unknown-unknown" ];

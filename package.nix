@@ -1,7 +1,7 @@
 {
   fetchPnpmDeps,
   lib,
-  nodejs_22,
+  nodejs_26,
   nix-eval-wasm,
   pnpm,
   pnpmConfigHook,
@@ -18,12 +18,12 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-lo6JFoHWWMw7OSAQbTeTF/7MqwuLz26Ik3d2MC0IpKI=";
+    hash = "sha256-LSf78Zcb3ZDEbT8iIIZFY2SG6SG02mfialuhjjA0+7w=";
     fetcherVersion = 4;
   };
 
   nativeBuildInputs = [
-    nodejs_22
+    nodejs_26
     pnpm
     pnpmConfigHook
     typescript
